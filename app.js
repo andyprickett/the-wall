@@ -8,6 +8,13 @@ const http = require("http");
 
 const app = express();
 
+// Database connected?
+// const db = require("./db/models").sequelize;
+
+// db.authenticate()
+//   .then(() => console.log("Database connected..."))
+//   .catch(err => console.log("Error: " + err));
+
 // Settings
 app.set("port", normalizePort(process.env.PORT || "3000"));
 app.set("view engine", "ejs");
