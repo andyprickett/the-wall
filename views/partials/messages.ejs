@@ -1,0 +1,13 @@
+<% if (validationErrorMessages.length) { %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Message for you:</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <ul>
+      <% validationErrorMessages.forEach(validationErrorMessage => { %>
+        <li><%= `${validationErrorMessage.param.charAt(0).toUpperCase()}${validationErrorMessage.param.slice(1)}: ${validationErrorMessage.msg}.` %></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>

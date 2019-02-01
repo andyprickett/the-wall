@@ -78,6 +78,30 @@ describe("routes : posts", () => {
       });
     });
   });
+  describe("POST /posts/create", () => {
+    it("should NOT create a new post and redirect", done => {
+      const options = {
+        url: `${base}/create`,
+        form: {
+          title: "Post Three",
+          content: ""
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Post.findOne({ where: { title: "Post Three" } })
+          .then(post => {
+            expect(err).toBeNull();
+            expect(post).toBeNull();
+            expect(res.statusCode).toBe(422);
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
+      });
+    });
+  });
   describe("GET /posts/:id", () => {
     it("should render a view with the selected post", done => {
       request.get(`${base}/${this.post.id}`, (err, res, body) => {

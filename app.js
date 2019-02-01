@@ -2,6 +2,7 @@ const express = require("express");
 
 const path = require("path");
 const bodyParser = require("body-parser");
+const { check } = require("express-validator/check");
 
 const staticController = require("./controllers/staticController");
 const postController = require("./controllers/postController");
@@ -27,7 +28,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.post("/posts/create", postController.create);
+app.post(
+  "/posts/create",
+  [
+    check(["title", "content"], "Cannot be empty")
+      .trim()
+      .not()
+      .isEmpty()
+  ],
+  postController.create
+);
 app.get("/posts/new", postController.new);
 app.get("/posts/:id", postController.show);
 app.get("/posts", postController.index);

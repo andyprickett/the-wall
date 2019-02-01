@@ -1,5 +1,6 @@
 const Post = require("../db/models").Post;
 const staticController = require("./staticController");
+const { validationResult } = require("express-validator/check");
 
 module.exports = {
   index(req, res, next) {
@@ -16,7 +17,8 @@ module.exports = {
       oldData: {
         title: "",
         content: ""
-      }
+      },
+      validationErrorMessages: []
     });
   },
   create(req, res, next) {
@@ -24,6 +26,17 @@ module.exports = {
       title: req.body.title,
       content: req.body.content
     };
+    var errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).render("posts/new", {
+        title: "New Post",
+        oldData: {
+          title: newPost.title,
+          content: newPost.content
+        },
+        validationErrorMessages: errors.array()
+      });
+    }
     Post.create({
       title: newPost.title,
       content: newPost.content
