@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include ../partials/head.ejs %>
+  </head>
+  <body>
+    <header>
+      <% include ../partials/navigation.ejs %>
+    </header>
+    <main class="container">
+      <h1><%= title %></h1>
+      <form action="/posts/create" method="post">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Enter title..." value="<%= oldData.title %>">
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea rows="4" class="form-control" id="content" name="content" placeholder="Enter post content..." value="<%= oldData.content %>"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </main>
+    <% include ../partials/baseScripts.ejs %>
+  </body>
+</html>

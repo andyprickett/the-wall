@@ -2,25 +2,28 @@ const request = require("request");
 const server = require("../../app");
 const base = "http://localhost:3000/posts";
 
-describe("routes : posts", () => {
-  // beforeEach(done => {
-  //   this.post;
+const sequelize = require("../../db/models/index").sequelize;
+const Post = require("../../db/models").Post;
 
-  //   sequelize.sync({ force: true }).then(res => {
-  //     Post.create({
-  //       title: "Post One",
-  //       article: "The first of many posts."
-  //     })
-  //       .then(post => {
-  //         this.post = post;
-  //         done();
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
+describe("routes : posts", () => {
+  beforeEach(done => {
+    this.post;
+
+    sequelize.sync({ force: true }).then(res => {
+      Post.create({
+        title: "Post One",
+        content: "The first of many posts."
+      })
+        .then(post => {
+          this.post = post;
+          done();
+        })
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    });
+  });
   describe("GET /posts", () => {
     it("should return a status code 200", done => {
       request.get(base, (err, res, body) => {
@@ -30,59 +33,59 @@ describe("routes : posts", () => {
       });
     });
   });
-  // describe("GET /things", () => {
-  //   it("should return a status code 200 and all things", done => {
-  //     request.get(base, (err, res, body) => {
-  //       expect(err).toBeNull();
-  //       expect(res.statusCode).toBe(200);
-  //       expect(body).toContain("Thing One");
-  //       done();
-  //     });
-  //   });
-  // });
-  // describe("GET /things/new", () => {
-  //   it("should render a new thing form", done => {
-  //     request.get(`${base}/new`, (err, res, body) => {
-  //       expect(err).toBeNull();
-  //       expect(res.statusCode).toBe(200);
-  //       expect(body).toContain("New Thing");
-  //       done();
-  //     });
-  //   });
-  // });
-  // describe("POST /things/create", () => {
-  //   it("should create a new thing and redirect", done => {
-  //     const options = {
-  //       url: `${base}/create`,
-  //       form: {
-  //         title: "Thing Two",
-  //         description: "The second of many things"
-  //       }
-  //     };
-  //     request.post(options, (err, res, body) => {
-  //       Thing.findOne({ where: { title: "Thing Two" } })
-  //         .then(thing => {
-  //           expect(err).toBeNull();
-  //           expect(res.statusCode).toBe(303);
-  //           expect(thing.title).toBe("Thing Two");
-  //           expect(thing.description).toBe("The second of many things");
-  //           done();
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //           done();
-  //         });
-  //     });
-  //   });
-  // });
-  // describe("GET /things/:id", () => {
-  //   it("should render a view with the selected thing", done => {
-  //     request.get(`${base}/${this.thing.id}`, (err, res, body) => {
-  //       expect(err).toBeNull();
-  //       expect(res.statusCode).toBe(200);
-  //       expect(body).toContain("Thing One");
-  //       done();
-  //     });
-  //   });
-  // });
+  describe("GET /posts", () => {
+    it("should return a status code 200 and all posts", done => {
+      request.get(base, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(res.statusCode).toBe(200);
+        expect(body).toContain("Post One");
+        done();
+      });
+    });
+  });
+  describe("GET /posts/new", () => {
+    it("should render a new post form", done => {
+      request.get(`${base}/new`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(res.statusCode).toBe(200);
+        expect(body).toContain("New Post");
+        done();
+      });
+    });
+  });
+  describe("POST /posts/create", () => {
+    it("should create a new post and redirect", done => {
+      const options = {
+        url: `${base}/create`,
+        form: {
+          title: "Post Two",
+          content: "The second of many posts"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Post.findOne({ where: { title: "Post Two" } })
+          .then(post => {
+            expect(err).toBeNull();
+            expect(res.statusCode).toBe(303);
+            expect(post.title).toBe("Post Two");
+            expect(post.content).toBe("The second of many posts");
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
+      });
+    });
+  });
+  describe("GET /posts/:id", () => {
+    it("should render a view with the selected post", done => {
+      request.get(`${base}/${this.post.id}`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(res.statusCode).toBe(200);
+        expect(body).toContain("Post One");
+        done();
+      });
+    });
+  });
 });

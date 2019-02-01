@@ -1,46 +1,47 @@
 const Post = require("../db/models").Post;
+const staticController = require("./staticController");
 
 module.exports = {
   index(req, res, next) {
-    res.send("TODO: list all posts");
-    // Thing.findAll()
-    //   .then(things => {
-    //     res.render("things/index", { title: "Index of Things", things });
-    //   })
-    //   .catch(next);
+    // res.send("TODO: list all posts");
+    Post.findAll()
+      .then(posts => {
+        res.render("posts/index", { title: "Index of Posts", posts });
+      })
+      .catch(next);
+  },
+  new(req, res, next) {
+    res.render("posts/new", {
+      title: "New Post",
+      oldData: {
+        title: "",
+        content: ""
+      }
+    });
+  },
+  create(req, res, next) {
+    var newPost = {
+      title: req.body.title,
+      content: req.body.content
+    };
+    Post.create({
+      title: newPost.title,
+      content: newPost.content
+    })
+      .then(post => {
+        res.redirect(303, "/posts");
+      })
+      .catch(next);
+  },
+  show(req, res, next) {
+    Post.findByPk(req.params.id)
+      .then(post => {
+        if (post === null) {
+          staticController.notFound(req, res, next);
+        } else {
+          res.render("posts/show", { title: post.title, post });
+        }
+      })
+      .catch(next);
   }
-  // new(req, res, next) {
-  //   res.render("things/new", {
-  //     title: "New Thing",
-  //     oldData: {
-  //       title: "",
-  //       description: ""
-  //     }
-  //   });
-  // },
-  // create(req, res, next) {
-  //   var newThing = {
-  //     title: req.body.title,
-  //     description: req.body.description
-  //   };
-  //   Thing.create({
-  //     title: newThing.title,
-  //     description: newThing.description
-  //   })
-  //     .then(thing => {
-  //       res.redirect(303, "/things");
-  //     })
-  //     .catch(next);
-  // },
-  // show(req, res, next) {
-  //   Thing.findByPk(req.params.id)
-  //     .then(thing => {
-  //       if (thing === null) {
-  //         staticController.notFound(req, res, next);
-  //       } else {
-  //         res.render("things/show", { title: thing.title, thing });
-  //       }
-  //     })
-  //     .catch(next);
-  // }
 };

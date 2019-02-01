@@ -16,14 +16,14 @@ describe("Post", () => {
       });
   });
   describe("#create()", () => {
-    it("should create a post object with a title and article", done => {
+    it("should create a post object with a title and content", done => {
       Post.create({
         title: "Test Post One",
-        article: "Test of the Post model."
+        content: "Test of the Post model."
       })
         .then(post => {
           expect(post.title).toBe("Test Post One");
-          expect(post.article).toBe("Test of the Post model.");
+          expect(post.content).toBe("Test of the Post model.");
           done();
         })
         .catch(err => {
@@ -31,7 +31,7 @@ describe("Post", () => {
           done();
         });
     });
-    it("should not create a post object with missing title or article", done => {
+    it("should not create a post object with missing title or content", done => {
       Post.create({
         title: "Test Post Two"
       })
