@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 
 const staticController = require("./controllers/staticController");
+const postController = require("./controllers/postController");
 
 const http = require("http");
 
@@ -24,6 +25,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
+app.get("/posts", postController.index);
+
 app.get("/", staticController.index);
 
 //Catch-all Bad Routes
