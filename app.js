@@ -1,14 +1,16 @@
 const express = require("express");
-const app = express();
+
+const staticController = require("./controllers/staticController");
+
 const http = require("http");
+
+const app = express();
 
 // Settings
 app.set("port", normalizePort(process.env.PORT || "3000"));
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
+app.get("/", staticController.index);
 
 const server = http.createServer(app);
 server.listen(app.get("port"), () => {
