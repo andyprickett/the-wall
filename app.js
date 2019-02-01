@@ -19,6 +19,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 app.get("/", staticController.index);
 
+//Catch-all Bad Routes
+app.get("*", staticController.notFound);
+
 const server = http.createServer(app);
 server.listen(app.get("port"), () => {
   console.log(`Server is listening for requests on port ${app.get("port")}...`);
