@@ -14,3 +14,4 @@ Things to be added or bettered:
 * Accessiblity updates for views
 * "flash" messaging
 * Refactoring for a more module-based pattern
+* Robust, database session store for production
